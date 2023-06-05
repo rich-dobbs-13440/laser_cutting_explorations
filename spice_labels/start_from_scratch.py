@@ -125,15 +125,33 @@ def t_error(t):
 
 def p_start(p):
     '''start : empty
-             | assignment_statement
-             | action_statement
-             | line_comment
-             | block_comment             
-             | module_definition
-             | function_definition
-             | include_statement
-             | use_statement'''
-    p[0] = p[1]
+             | statement start'''
+    p[0] = p[1]  # Optional handling of the current statement
+
+def p_statement(p):
+    '''statement : assignment_statement
+                 | action_statement
+                 | line_comment
+                 | block_comment             
+                 | module_definition
+                 | function_definition
+                 | include_statement
+                 | use_statement'''
+    p[0] = p[1]  # Return the matched statement
+
+
+# def p_start(p):
+#     '''start : 
+#              All| empty
+#              | assignment_statement
+#              | action_statement
+#              | line_comment
+#              | block_comment             
+#              | module_definition
+#              | function_definition
+#              | include_statement
+#              | use_statement'''
+#     p[0] = p[1]
 
 def p_empty(p):
     'empty :'
@@ -301,17 +319,57 @@ def process_input(input_text):
 
 
 # # Empty 
-# process_input("")
+process_input("")
 # # Single numeric assignment
-# process_input("""
-#      a = 12; 
+process_input("""
+      a = 12; 
 #     """)
 
 
 # Include statement syntax
 process_input("include <ScadStoicheia/centerable.scad>");
-process_input("
+# Use statement syntax
+process_input("use <ScadStoicheia/visualization.scad>");
+
+
+# Use several lines:
+process_input(
+"""
+
+include <ScadStoicheia/centerable.scad>
 use <ScadStoicheia/visualization.scad>
+include <ScadApotheka/material_colors.scad>
+use <ScadApotheka/m2_helper.scad>
+include <nutsnbolts-master/cyl_head_bolt.scad>
+include <nutsnbolts-master/data-metric_cyl_head_bolts.scad>
+use <PolyGear/PolyGear.scad>
+
+"""
+)
+
+
+process_input(
+"""
+include <ScadStoicheia/centerable.scad>
+use <ScadStoicheia/visualization.scad>
+include <ScadApotheka/material_colors.scad>
+use <ScadApotheka/m2_helper.scad>
+include <nutsnbolts-master/cyl_head_bolt.scad>
+include <nutsnbolts-master/data-metric_cyl_head_bolts.scad>
+use <PolyGear/PolyGear.scad>
+
+
+a_lot = 200;
+d_filament = 1.75 + 0.;
+d_filament_with_clearance = d_filament + 0.75;  // Filament can be inserted even with elephant footing.
+od_ptfe_tube = 4 + 0;
+id_ptfe_tube = 2 + 0;
+d_ptfe_insertion = od_ptfe_tube + 0.5;
+d_m2_nut_driver = 6.0;
+
+"""
+)
+
 # # Multiple numeric assignment
 # process_input("""
 #      a = 12; 
