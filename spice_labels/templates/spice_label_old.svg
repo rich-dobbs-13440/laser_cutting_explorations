@@ -1,0 +1,4 @@
+
+  {# <rect class="LASER_CUT SPICE_LABEL" > #}
+  <text x="10" y="20" class="ENGRAVE SPICE_LABEL">{{ spice_name }}</text>
+   {# </rect> #}

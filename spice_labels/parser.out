@@ -1,0 +1,79 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    COMMENT
+    LBRACE
+    RBRACE
+
+Grammar
+
+Rule 0     S' -> start
+Rule 1     start -> empty
+Rule 2     start -> assignment_statement
+Rule 3     start -> action_statement
+Rule 4     empty -> <empty>
+Rule 5     expression -> expression PLUS expression
+Rule 6     expression -> expression MINUS expression
+Rule 7     expression -> expression MULTIPLY expression
+Rule 8     expression -> expression DIVIDE expression
+Rule 9     expression -> expression MODULO expression
+Rule 10    expression -> expression POWER expression
+Rule 11    expression -> expression LESSTHAN expression
+Rule 12    expression -> expression LESSEQUAL expression
+Rule 13    expression -> expression EQUAL expression
+Rule 14    expression -> expression NOTEQUAL expression
+Rule 15    expression -> expression GREATEREQUAL expression
+Rule 16    expression -> expression GREATERTHAN expression
+Rule 17    expression -> expression AND expression
+Rule 18    expression -> expression OR expression
+Rule 19    expression -> NOT expression
+Rule 20    expression -> NUMBER
+Rule 21    expression -> ID
+Rule 22    assignment_statement -> ID ASSIGN expression SEMICOLON
+Rule 23    action_statement -> ID LPAREN parameter_values RPAREN action_end
+Rule 24    parameter_values -> expression
+Rule 25    parameter_values -> expression COMMA parameter_values
+Rule 26    parameter_values -> parameter_value
+Rule 27    parameter_value -> ID ASSIGN expression
+
+Terminals, with rules where they appear
+
+AND                  : 17
+ASSIGN               : 22 27
+COMMA                : 25
+COMMENT              : 
+DIVIDE               : 8
+EQUAL                : 13
+GREATEREQUAL         : 15
+GREATERTHAN          : 16
+ID                   : 21 22 23 27
+LBRACE               : 
+LESSEQUAL            : 12
+LESSTHAN             : 11
+LPAREN               : 23
+MINUS                : 6
+MODULO               : 9
+MULTIPLY             : 7
+NOT                  : 19
+NOTEQUAL             : 14
+NUMBER               : 20
+OR                   : 18
+PLUS                 : 5
+POWER                : 10
+RBRACE               : 
+RPAREN               : 23
+SEMICOLON            : 22
+error                : 
+
+Nonterminals, with rules where they appear
+
+action_end           : 23
+action_statement     : 3
+assignment_statement : 2
+empty                : 1
+expression           : 5 5 6 6 7 7 8 8 9 9 10 10 11 11 12 12 13 13 14 14 15 15 16 16 17 17 18 18 19 22 24 25 27
+parameter_value      : 26
+parameter_values     : 23 25
+start                : 0
+

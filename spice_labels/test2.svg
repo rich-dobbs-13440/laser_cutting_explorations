@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
+  <style>
+    .LASER_CUT {
+      fill: none;
+      stroke: #000000;
+      stroke-width: 0.001in;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: none;
+    }
+  
+    .ENGRAVE {
+      fill: #0033ff;
+      stroke: red;
+      stroke-width: 0.003in;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: none;
+      fill-opacity: 0.3;
+    }
+  
+    rect.LASER_CUT.SPICE_LABEL {
+      width: 40mm;
+      height: 20mm;
+    }
+  </style>
+    
+  <rect class="LASER_CUT SPICE_LABEL"> 
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12pt" class="ENGRAVE SPICE_LABEL">Oregano</text>
+  </rect>
+
+        <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Oregano</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Paprika</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Parsley</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Red Pepper Flakes</text>
+  </rect>
+        <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Rosemary</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Saffron</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Rubbed Sage</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Tarragon</text>
+  </rect>
+        <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Ground Thyme</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Thyme Leaves</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Turmeric</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Vanilla</text>
+  </rect>
+        <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">White Pepper</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Black Pepper</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Salt</text>
+  </rect>
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">Fennel Seed</text>
+  </rect>
+
+</svg>

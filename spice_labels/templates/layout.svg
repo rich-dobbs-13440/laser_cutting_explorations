@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="{{ container_width }}" height="{{ container_height }}">
+  <style>
+      {% include 'laser_cutting_styles.css' %}
+  </style>
+  {% set item_width = fixed_spacing_width %}
+  {% set item_height = fixed_spacing_height %}
+
+  {% for row in range(rows) %}
+    {% for column in range(columns) %}
+      {%- set x = column * item_width -%}
+      {%- set y = row * item_height -%}
+      {%- set spice_name = spice_names_for_page[row][column] -%}
+      {%- if spice_name -%}
+          {% include 'spice_label.svg' ignore missing%}
+      {%- endif -%}
+    {% endfor %}
+  {% endfor %}
+</svg>

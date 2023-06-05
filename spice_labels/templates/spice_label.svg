@@ -1,0 +1,7 @@
+  
+  <svg xmlns="http://www.w3.org/2000/svg" x="{{ x }}mm" y="{{ y }}mm" width="{{ rectangle_width }}mm" height="{{ rectangle_height }}mm">
+  <rect class="LASER_CUT SPICE_LABEL"> 
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"  font-size="12pt"  class="ENGRAVE SPICE_LABEL">{{ spice_name }}</text>
+  </rect>
+  </svg>
+
