@@ -2,15 +2,43 @@ import ply.lex as lex
 import ply.yacc as yacc
 import re
 
+class Expression:
+    def __init__(self, value):
+        self.value = value
+    
+    def __str__(self):
+        return str(self.value)
+
+
+class FunctionCall(Expression):
+    def __init__(self, function_name, arguments):
+        super().__init__((function_name, arguments))
+    
+    def __str__(self):
+        function_name, arguments = self.value
+        arg_list = ", ".join(map(str, arguments))
+        return f"{function_name}({arg_list})"
+
+class ConditionalExpression(Expression):
+    def __init__(self, condition, true_value, false_value):
+        super().__init__((condition, true_value, false_value))
+    
+    def __str__(self):
+        condition, true_value, false_value = self.value
+        return f"({condition} ? {true_value} : {false_value})"    
+
+error_count = 0  # Counter for tracking the number of errors
 
 precedence = (
+    ('right', 'NOT'),
+    ('left', 'MULTIPLY', 'DIVIDE', 'MODULO'),    
     ('left', 'PLUS', 'MINUS'),
-    ('left', 'MULTIPLY', 'DIVIDE', 'MODULO'),
     ('left', 'POWER'),
     ('nonassoc', 'LESSTHAN', 'LESSEQUAL', 'EQUAL', 'NOTEQUAL', 'GREATEREQUAL', 'GREATERTHAN'),
     ('left', 'AND'),
     ('left', 'OR'),
-    ('right', 'NOT'),
+    ('left', 'QUESTION', 'COLON'),
+    
 )
 
 
@@ -44,7 +72,10 @@ tokens = (
     'GREATERTHAN',
     'AND',
     'OR',
-    'NOT',          
+    'NOT', 
+    'STRING',
+    'QUESTION',
+    'COLON',            
 )
 
 def t_newline(t):
@@ -78,6 +109,11 @@ def t_USE_STATEMENT(t):
     t.value = match.groups(0)[0] 
     return t
 
+# def p_expression_string(p):
+#     '''expression : STRING'''
+#     p[0] = p[1]
+#     print("String Literal: {}".format(p[1]))
+
 
 # Token handlers
 def t_NUMBER(t):
@@ -87,9 +123,6 @@ def t_NUMBER(t):
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     return t
-
-
-
 
 t_EQUALS = r'='
 t_LPAREN = r'\('
@@ -114,12 +147,35 @@ t_AND = r'&&'
 t_OR = r'\|\|'
 t_NOT = r'!'
 
-  
+def t_QUESTION(t):
+    r'\?'
+    return t
+
+def t_COLON(t):
+    r':'
+    return t  
 
 # Error handler
+# def t_error(t):
+#     print("Illegal character '%s'" % t.value[0])
+#     t.lexer.skip(1)
+
+
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
+    global error_count
+    error_count += 1
+    if error_count >= 5:
+        raise Exception("Too many errors. Parsing stopped.")
+    else:
+        print("Syntax error at line {}: Unexpected token {}".format(t.lineno, t.type))
+        t.lexer.skip(1)    
+
+# Value classes.
+
+class ModuleCall:
+    def __init__(self, name, parameter_values):
+        self.name = name
+        self.parameter_values = parameter_values        
 
 # Grammar rules
 
@@ -229,7 +285,19 @@ def p_parameter_item(p):
     else:
         p[0] = (p[1], p[3])  # Parameter with default value
 
+# def p_conditional_expression(p):
+#     '''conditional_expression : expression QUESTION expression COLON expression'''
+#     print("len(p)", len(p))
+#     p[0] = ConditionalExpression(p[1], p[3], p[5])
+#     print("Conditional", p[0])
 
+def p_conditional_expression(p):
+    '''conditional_expression : expression QUESTION expression COLON expression
+                              | conditional_expression QUESTION expression COLON expression'''
+    if len(p) == 6:
+        p[0] = ConditionalExpression(p[1], p[3], p[5])
+    else:
+        p[0] = ConditionalExpression(p[1], p[3], p[5])    
 
 
 def p_expression_binop(p):
@@ -264,14 +332,25 @@ def p_expression_unary(p):
 
 def p_expression(p):
     '''expression : NUMBER
-                  | ID'''
+                  | ID
+                  | STRING
+                  | conditional_expression
+                  | function_call'''
     if p.slice[1].type == 'NUMBER':
         p[0] = p[1]
-        pass
-    else:  # Symbolic expression
+    elif p.slice[1].type == 'STRING':
+        p[0] = p[1]
+    elif len(p) == 2:
+        p[0] = p[1] 
+    elif len(p) == 4:
+        # Handle parentheses
+        p[0] = p[2]               
+    else:  # Symbolic expression or conditional expression
         p[0] = p[1]
 
- 
+def p_function_call(p):
+    '''function_call : ID parameter_values'''
+    p[0] = FunctionCall(p[1], p[2])
 
 def p_parameter_values(p):
     '''parameter_values : expression
@@ -291,11 +370,23 @@ def p_action_end_block(p):
     pass        
 
 
+# def p_error(p):
+#     if p:
+#         print("Syntax error at line {}: Unexpected token {}".format(p.lineno, p.type))
+#     else:
+#         print("Syntax error: Unexpected end of input")
+
+
 def p_error(p):
-    if p:
-        print("Syntax error at line {}: Unexpected token {}".format(p.lineno, p.type))
+    global error_count
+    error_count += 1
+    if error_count >= 1:
+        raise Exception("Too many errors. Parsing stopped.")
     else:
-        print("Syntax error: Unexpected end of input")
+        if p:
+            print("Syntax error at line {}: Unexpected token {}".format(p.lineno, p.type))
+        else:
+            print("Syntax error: Unexpected end of input")        
 
 # Symbol table
 symbol_table = {}
@@ -304,6 +395,8 @@ symbol_table = {}
 parser = yacc.yacc()
 
 def process_input(input_text):
+    global error_count
+    error_count = 0
 
     # Lexer instance
     lexer = lex.lex()
@@ -316,6 +409,13 @@ def process_input(input_text):
         print(token)
 
     print(parser.parse(input_text, lexer=lexer))
+
+
+def process_file(file_path):
+    with open(file_path, 'r') as file:
+        input_text = file.read()
+        process_input(input_text)
+
 
 
 # # Empty 
@@ -369,6 +469,71 @@ d_m2_nut_driver = 6.0;
 
 """
 )
+
+
+# # Try a simple conditional assignement
+# process_input("a = b ? c : d;")
+
+
+# # Try a string of conditionals :
+# process_input("""
+#     a = b ? c : 
+#         d ? e : f;""")
+
+
+# process_input(""""
+# visualization_clamp_gear = 
+#     visualize_info(); 
+# """)
+
+# process_input(""""
+# visualization_clamp_gear = 
+#     visualize_info(
+#         "Clamp Gear", PART_3, clamp_gear, layout_from_mode(layout), show_parts); 
+# """)
+
+process_input(              
+"""
+filament(as_clearance=false);
+pure_vitamin_slide(center=BEHIND); 
+drive_gear_retainer(show_vitamins=show_vitamins);
+alt_drive_gear_retainer();
+
+clamp_gears(show_vitamins=show_vitamins);
+hub(show_vitamins=show_vitamins);
+drive_gear(show_vitamins=show_vitamins);
+drive_shaft(show_vitamins = true);
+spokes();   
+"""  
+)         
+
+# # Try the troublesome code:
+# process_input("""
+# layout = 
+#     mode == NEW_DEVELOPMENT ? "hidden" :
+#     mode == DESIGNING ? "as_designed" :
+#     mode == MESHING_GEARS ? "mesh_gears" :
+#     mode == ASSEMBLE_SUBCOMPONENTS ? "assemble" :
+#     mode == PRINTING ? "printing" :
+#     "unknown";"""
+              
+#               )
+
+
+# Try using it in a function assignment :
+# process_input("""
+# function layout_from_mode(mode) = 
+#     mode == NEW_DEVELOPMENT ? "hidden" :
+#     mode == DESIGNING ? "as_designed" :
+#     mode == MESHING_GEARS ? "mesh_gears" :
+#     mode == ASSEMBLE_SUBCOMPONENTS ? "assemble" :
+#     mode == PRINTING ? "printing" :
+#     "unknown";"""
+              
+#               )
+
+file_path = "planetary_filament_clamp.scad"
+process_file(file_path)
 
 # # Multiple numeric assignment
 # process_input("""
