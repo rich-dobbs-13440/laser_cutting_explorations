@@ -37,5 +37,5 @@ openscad -o "$medium_etch_filepath" -D mode=\"Medium\" "$filename"
 
 heavy_etch_file="${filename%.*}_heavy_etch.svg"
 heavy_etch_filepath="$directory/$heavy_etch_file"
-openscad -o "$heavy_etch_filepath" -D mode=\"Heavy\" "$filename"ink
+openscad -o "$heavy_etch_filepath" -D mode=\"Heavy\" "$filename"
 
