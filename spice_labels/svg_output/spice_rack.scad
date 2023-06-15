@@ -51,8 +51,14 @@ svg_layout = [
     [PART_3, [x_part_3, y_part_3, 0]],
     [PART_4, [x_part_4, y_part_4, 0]],
     [PART_5, [x_part_5, y_part_5, 0]],
-    [PART_6, [x_part_5, y_part_5, 0]],  
+    [PART_6, [0, -20, 0]],  
+    [PART_7, [0, -40, 0]],  
+    [PART_8, [0, -60, 0]],  
+    [PART_9, [0, -80, 0]],  
+    [PART_10, [0, -100, 0]],  
 ];
+
+
 
 baltic_birch_one_eighth = [["z", 3.3], ["material", "baltic birch"]]; 
 
@@ -114,8 +120,12 @@ module base() {
     lc_translate(PART_3, [40, 20, 30]) lc_slab(PART_3, LIGHT_ETCH, 14, 14, CENTER);
     lc_translate(PART_4, [50, 20, 40]) lc_slab(PART_4, MEDIUM_ETCH, 12, 12, CENTER);
     lc_translate(PART_5, [60, 20, 50]) lc_slab(PART_5, HEAVY_ETCH, 10, 10, CENTER);
-    lc_translate(PART_6, [60, 20, 50]) lc_text(PART_6, "Cinnamon", laser_action=CUT);
     
+    lc_translate(PART_6, [60, 20, 50]) lc_text(PART_6, "Cinnamon", laser_action=CUT);
+    lc_translate(PART_7, [60, 20, 50]) lc_text(PART_7, "Basel", laser_action=SCORE);
+    lc_translate(PART_8, [60, 20, 50]) lc_text(PART_8, "Oregano", laser_action=LIGHT_ETCH);
+    lc_translate(PART_9, [60, 20, 50]) lc_text(PART_9, "Thyme", laser_action=MEDIUM_ETCH);
+    lc_translate(PART_10, [60, 20, 50]) lc_text(PART_10, "Herbe De Provence", laser_action=HEAVY_ETCH);
 }
 
 base();
